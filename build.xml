@@ -1,0 +1,34 @@
+<project name="net2" default="build">
+
+    <property name="kotlin.lib" value="lib"/>
+
+    <typedef resource="org/jetbrains/kotlin/ant/antlib.xml"
+             classpath="${kotlin.lib}/kotlin-ant.jar"/>
+
+    <path id="classpath">
+        <fileset dir="${kotlin.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <target name="build">
+        <delete dir="classes" failonerror="false"/>
+        <mkdir dir="classes"/>
+        <javac destdir="classes" includeAntRuntime="false" srcdir="src">
+            <withKotlin/>
+            <classpath refid="classpath" />
+        </javac>
+        <jar destfile="net2-server.jar"
+             manifest="src/ru/nsu/ccfit/pleshkov/net2/server/META-INF/MANIFEST.MF">
+            <fileset dir="classes">
+            </fileset>
+            <zipgroupfileset dir="${kotlin.lib}" includes="*.jar" />
+        </jar>
+        <jar destfile="net2-client.jar"
+             manifest="src/ru/nsu/ccfit/pleshkov/net2/client/META-INF/MANIFEST.MF">
+            <fileset dir="classes">
+            </fileset>
+            <zipgroupfileset dir="${kotlin.lib}" includes="*.jar" />
+        </jar>
+    </target>
+</project>
